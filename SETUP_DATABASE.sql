@@ -14,3 +14,7 @@ CREATE TABLE IF NOT EXISTS votes ( -- Table to hold the votes people cast
     name VARCHAR(150) NOT NULL, -- Name of the thing we are voting on
     vote enum('YES', 'NO', 'ABSTAIN') NOT NULL -- The only possible votes
 );
+
+GRANT SELECT,INSERT,DELETE ON voting.* TO 'secretVote'@'%' IDENTIFIED BY 'test';
+
+flush privileges;
