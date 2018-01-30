@@ -33,9 +33,9 @@ session_start(); // Have to start session before html
 
 <?php if ($_SESSION["isadmin"] == true){ 
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "root";
+    $servername = "127.0.0.1";
+    $username = "secretVote";
+    $password = "test";
     $dbname = "voting";
 
     $conn = new mysqli($servername, $username, $password, $dbname);

@@ -3,9 +3,9 @@ session_start();
 
 if ($_SESSION["isadmin"] == true) { // Make sure we have admin permissions
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Make sure the request is a POST
-        $servername = "localhost";
-        $username = "root";
-        $password = "root";
+        $servername = "127.0.0.1";
+        $username = "secretVote";
+        $password = "test";
         $dbname = "voting";
 
         $conn = new mysqli($servername, $username, $password, $dbname);

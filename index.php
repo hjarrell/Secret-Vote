@@ -15,9 +15,9 @@ session_start();
 
  <?php
     // Database information
-    $servername = "localhost";
-    $username = "root";
-    $password = "root";
+    $servername = "127.0.0.1";
+    $username = "secretVote";
+    $password = "test";
     $dbname = "voting";
 
     // Creates a connection to the database with the info above.

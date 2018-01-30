@@ -4,9 +4,9 @@ session_start();
 $vote = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $servername = "localhost";
-    $username = "root";
-    $password = "root";
+    $servername = "127.0.0.1";
+    $username = "secretVote";
+    $password = "test";
     $dbname = "voting";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
