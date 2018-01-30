@@ -9,24 +9,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = "root";
     $dbname = "voting";
 
-    /*
-    CREATE TABLE current_poll (
-    id enum('1') NOT NULL,
-    name VARCHAR(50) NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-    */
-
     $conn = new mysqli($servername, $username, $password, $dbname);
 
+    // Checks if there is even a current poll
     $checkForCurrentPollSql = "SELECT * from current_poll;";
     $result = $conn->query($checkForCurrentPollSql);
     if ($result->num_rows > 0) {
+        // Gets the name of the person we are voting on
         $name = $result->fetch_assoc()["name"];
 
+        // Checks to see if there is even a vote
         if (!empty($_POST["vote"])){
-            $vote = htmlspecialchars($_POST["vote"]);
+            $vote = $_POST["vote"];
             $insertSql = "";
+            // Manually sets the vote instead of appending $vote to protect against SQL Injection
             switch ($vote) {
                 case "YES":
                     $insertSql = "INSERT INTO votes VALUES ('".$name."','YES');";
@@ -38,17 +34,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $insertSql = "INSERT INTO votes VALUES ('" . $name . "','ABSTAIN');";
                     break;
                 default:
-                die ("oh no" . $vote);
                     break;
             }
-            print($insertSql);
+            // If we have a valid vote then we should insert it.
             if (!empty($insertSql)) {
                 $conn->query($insertSql);
-                $_SESSION[$name] = true;
+                $_SESSION[$name] = true; // This keeps double voting from happening
             }
         }
     }
     $conn->close();
 }
-    HEADER("Location: index.php");
+// Redirects back to main page
+Header("Location: index.php");
 ?>

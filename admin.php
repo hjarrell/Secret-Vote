@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start(); // Have to start session before html
 ?>
 
 <html>
@@ -7,10 +7,10 @@ session_start();
   <title>Secret Voting - SHHHHH</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-  table {
-      border-collapse: collapse;
-      width: 100%;
-  }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
     th,td {
         border: 1px solid #ddd;
         padding: 15px;
@@ -38,14 +38,6 @@ session_start();
     $password = "root";
     $dbname = "voting";
 
-    /*
-        CREATE TABLE current_poll (
-            id enum('1') NOT NULL,
-            name VARCHAR(50) NOT NULL
-        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-    */
-
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     if ($conn->connect_error) {
@@ -56,8 +48,6 @@ session_start();
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $name = $row["name"];
-
-            
 
             echo "<h3>We are currently voting on: <strong>" . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</strong></h3>";
             echo "<br>";
@@ -78,9 +68,11 @@ session_start();
             ';
         }
 
+        // Gets all the names of the people who have votes
         $nameSql = "SELECT DISTINCT name FROM votes ORDER BY name ASC;";
         $nameResult = $conn->query($nameSql);
         if ($nameResult->num_rows > 0) {
+            // Sets up the table header
             echo '
                 <table>
                     <tr>
@@ -92,7 +84,9 @@ session_start();
                     </tr>
             ';
 
+            // Loops over each row of names
             while ($row = $nameResult->fetch_assoc()) {
+                // These all count the results of the votes by each type and then the grand total and then fetching the result
                 $yesVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $row["name"] . "' AND vote='YES';") or die($conn->error);
                 $yesVotes = $yesVotesResult->fetch_assoc()["total"];
                 $noVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $row["name"] . "' AND vote='NO';");
@@ -101,6 +95,8 @@ session_start();
                 $abstainVotes = $abstainVotesResult->fetch_assoc()["total"];
                 $totalVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $row["name"] . "';");
                 $totalVotes = $totalVotesResult->fetch_assoc()["total"];
+                
+                // Sets up the table row.
                 echo '<tr>';
                 echo '<td>'.$row["name"].'</td>';
                 echo '<td>'.$yesVotes.'</td>';
@@ -109,8 +105,7 @@ session_start();
                 echo '<td>'.$totalVotes.'</td>';
                 echo '</tr>';
             }
-
-
+            // Closes the table started above
             echo '</table>';
         } else {
             echo "You currently have no votes :(";
@@ -120,10 +115,9 @@ session_start();
 } else { ?>
 
     <form action="adminlogin.php" method="post">
-    Password: <input type="text" name="password">
-    <input type="submit">
-
-</form>
+        Password: <input type="text" name="password">
+        <input type="submit">
+    </form>
 
 <?php } ?>
 
