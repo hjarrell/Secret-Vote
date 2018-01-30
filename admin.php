@@ -88,6 +88,7 @@ session_start();
                         <th>YES</th>
                         <th>NO</th>
                         <th>ABSTAIN</th>
+                        <th>Total</th>
                     </tr>
             ';
 
@@ -98,11 +99,14 @@ session_start();
                 $noVotes = $noVotesResult->fetch_assoc()["total"];
                 $abstainVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $row["name"] . "' AND vote='ABSTAIN';");
                 $abstainVotes = $abstainVotesResult->fetch_assoc()["total"];
+                $totalVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $row["name"] . "';");
+                $totalVotes = $totalVotesResult->fetch_assoc()["total"];
                 echo '<tr>';
                 echo '<td>'.$row["name"].'</td>';
                 echo '<td>'.$yesVotes.'</td>';
                 echo '<td>'.$noVotes.'</td>';
                 echo '<td>'.$abstainVotes.'</td>';
+                echo '<td>'.$totalVotes.'</td>';
                 echo '</tr>';
             }
 
