@@ -115,7 +115,7 @@ session_start(); // Have to start session before html
 } else { ?>
 
     <form action="adminlogin.php" method="post">
-        Password: <input type="text" name="password">
+        Password: <input type="password" name="password">
         <input type="submit">
     </form>
 
