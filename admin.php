@@ -6,6 +6,7 @@ session_start(); // Have to start session before html
  <head>
   <title>Secret Voting - SHHHHH</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/favicon.ico?" type="image/x-icon">
   <style>
     table {
         border-collapse: collapse;
