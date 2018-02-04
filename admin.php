@@ -73,6 +73,13 @@ session_start(); // Have to start session before html
         $nameSql = "SELECT DISTINCT name FROM votes ORDER BY name ASC;";
         $nameResult = $conn->query($nameSql);
         if ($nameResult->num_rows > 0) {
+            // Clear votes button
+            echo '
+                <form action="admincommand.php" method="post">
+                    <input type="hidden" name="command" value="clearvotes">
+                    <input type="submit" value="CLEAR ALL VOTES!">
+                </form>
+            ';
             // Sets up the table header
             echo '
                 <table>

@@ -26,6 +26,9 @@ if ($_SESSION["isadmin"] == true) { // Make sure we have admin permissions
                             $sql = "INSERT INTO current_poll VALUES (1,'".mysqli_real_escape_string($conn, $name)."');"; // Start a poll by inserting into current_poll
                         }
                         break;
+                    case "clearvotes":
+                        $sql="DELETE FROM votes WHERE 1=1;";
+                        break;
                     default:
                         break;
                 }
