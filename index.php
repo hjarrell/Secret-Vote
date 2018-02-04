@@ -12,7 +12,7 @@ session_start();
  </head>
  <body>
 
-<h1>Secret Votings - SHHHHH ITS SECRET</h1>
+<h1>Secret Voting - SHHHHH IT IS SECRET</h1>
 
  <?php
     // Database information
