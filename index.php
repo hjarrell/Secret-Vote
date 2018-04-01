@@ -38,7 +38,7 @@ session_start();
             echo "<h3>We are currently voting on: <strong>" . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</strong></h3>";
             echo "<br>";
             // Session of the name means we voted on this person already
-            if (isset($_SESSION[$name])) {
+            if (isset($_SESSION[md5($name)])) {
                 echo "You already voted for this person.";
             } else {
                 echo '

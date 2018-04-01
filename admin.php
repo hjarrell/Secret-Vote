@@ -94,14 +94,15 @@ session_start(); // Have to start session before html
 
             // Loops over each row of names
             while ($row = $nameResult->fetch_assoc()) {
+                $rowName = $conn->escape_string($row["name"]);
                 // These all count the results of the votes by each type and then the grand total and then fetching the result
-                $yesVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $row["name"] . "' AND vote='YES';") or die($conn->error);
+                $yesVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $rowName . "' AND vote='YES';") or die($conn->error);
                 $yesVotes = $yesVotesResult->fetch_assoc()["total"];
-                $noVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $row["name"] . "' AND vote='NO';");
+                $noVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $rowName . "' AND vote='NO';");
                 $noVotes = $noVotesResult->fetch_assoc()["total"];
-                $abstainVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $row["name"] . "' AND vote='ABSTAIN';");
+                $abstainVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $rowName . "' AND vote='ABSTAIN';");
                 $abstainVotes = $abstainVotesResult->fetch_assoc()["total"];
-                $totalVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $row["name"] . "';");
+                $totalVotesResult = $conn->query("SELECT COUNT(*) AS total FROM votes WHERE name='". $rowName . "';");
                 $totalVotes = $totalVotesResult->fetch_assoc()["total"];
                 
                 // Sets up the table row.
