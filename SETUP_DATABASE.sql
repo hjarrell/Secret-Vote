@@ -4,17 +4,40 @@ CREATE DATABASE IF NOT EXISTS voting;
 -- Set voting to the current database we are useing
 USE voting;
 
-CREATE TABLE IF NOT EXISTS current_poll ( -- Table that holds the current thing we are voting on
-        id enum('1') NOT NULL, -- This forces the column to only be 1
-        name VARCHAR(150) NOT NULL, -- The name of the person we are voting on
-        PRIMARY KEY (id) -- Force id to be unique so since it can only be 1 the table can only have 1 row
+-- Holds the basic poll information
+CREATE TABLE IF NOT EXISTS polls (
+    id INT AUTO_INCREMENT,
+    title VARCHAR(500) NOT NULL, -- Title of the poll
+    PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS votes ( -- Table to hold the votes people cast
-    name VARCHAR(150) NOT NULL, -- Name of the thing we are voting on
-    vote enum('YES', 'NO', 'ABSTAIN') NOT NULL -- The only possible votes
+-- Holds the id of the current poll being voted on
+CREATE TABLE IF NOT EXISTS current_poll (
+    id ENUM('1') NOT NULL, -- This forces the id to only be 1
+    poll_id INT NOT NULL,  -- ID of the poll being voted on
+    PRIMARY KEY (id),      -- This forces there to either be 1 or 0 rows since primary keys are unique
+    FOREIGN KEY (poll_id) REFERENCES polls(id)
 );
 
-GRANT SELECT,INSERT,DELETE ON voting.* TO 'secretVote'@'%' IDENTIFIED BY 'test';
+-- Holds the actual poll options
+CREATE TABLE IF NOT EXISTS poll_options (
+    id INT AUTO_INCREMENT,
+    poll_id INT NOT NULL,
+    option_text VARCHAR(250) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (poll_id) REFERENCES polls(id)
+);
 
-flush privileges;
+-- Holds the votes people cast
+CREATE TABLE IF NOT EXISTS votes (
+    id INT AUTO_INCREMENT,
+    poll_id INT NOT NULL, -- Poll that was voted on
+    option_id INT NOT NULL, -- Option that was chosen
+    PRIMARY KEY (id),
+    FOREIGN KEY (poll_id) REFERENCES polls(id),
+    FOREIGN KEY (option_id) REFERENCES poll_options(id)
+);
+
+GRANT SELECT,INSERT,DELETE ON voting.* TO 'screteVote'@'%' IDENTIFIED BY 'test';
+
+FLUSH PRIVILEGES;
