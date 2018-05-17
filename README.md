@@ -4,13 +4,6 @@ This is a a damn simple secret voting site. The admin has one password that is h
 
 This came out of my Chapter of Alpha Phi Omega needing an easy secret voting system.
 
-## TODO
-
-- Stop hardcodeing the admin password
-- Fix the issue with revoting
-- Add a style sheet
-- Add a favicon
-
 ## How to setup
 
 1. Setup a webserver with mysql and php by yourself or some hosted service
