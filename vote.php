@@ -15,34 +15,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $checkForCurrentPollSql = "SELECT * from current_poll;";
     $result = $conn->query($checkForCurrentPollSql);
     if ($result->num_rows > 0) {
-        // Gets the name of the person we are voting on
-        $name = $result->fetch_assoc()["name"];
+        // Gets the id of the poll we are voting on
+        $pollId = $conn->real_escape_string($result->fetch_assoc()["poll_id"]);
 
-        $stmt = $conn->prepare("INSERT INTO votes (name, vote) VALUES (?, ?);");
-        $stmt->bind_param("ss", $name, $voteText);
+        $stmt = $conn->prepare("INSERT INTO votes (poll_id, option_id) VALUES (?, ?);");
+        $stmt->bind_param("ii", $pollId, $optionId);
 
         // Checks to see if there is even a vote
         if (!empty($_POST["vote"])){
             $vote = $_POST["vote"];
-            $insertSql = "";
-            // Manually sets the vote instead of appending $vote to protect against SQL Injection
-            switch ($vote) {
-                case "YES":
-                    $voteText = "YES";
-                    break;
-                case "NO":
-                    $voteText = "NO";
-                    break;
-                case "ABSTAIN":
-                    $voteText = "ABSTAIN";
-                    break;
-                default:
-                    break;
-            }
+            
+            $optionId = $conn->real_escape_string($vote);
+
             // If we have a valid vote then we should insert it.
-            if (!empty($voteText)) {
+            if (!empty($optionId)) {
                 $stmt->execute();
-                $_SESSION[md5($name)] = true; // This keeps double voting from happening
+                var_dump($stmt->error);
+                $_SESSION[md5($pollId)] = true; // This keeps double voting from happening
             }
         }
     }
