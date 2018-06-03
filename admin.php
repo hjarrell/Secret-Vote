@@ -33,11 +33,8 @@ session_start(); // Have to start session before html
 <h1>Secret Votings - SHHHHH ITS SECRET</h1>
 
 <?php if ($_SESSION["isadmin"] == true) {
-
-    $servername = "127.0.0.1";
-    $username = "secretVote";
-    $password = "test";
-    $dbname = "voting";
+    // Get database login information
+    include "databasecreds.php";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 

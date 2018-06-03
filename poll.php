@@ -3,10 +3,8 @@ session_start(); // Have to start session before html
 
 if ($_SESSION["isadmin"] == true) { // Make sure we have admin permissions
     if ($_SERVER["REQUEST_METHOD"] == "POST") { // Make sure the request is a POST
-        $servername = "127.0.0.1";
-        $username = "secretVote";
-        $password = "test";
-        $dbname = "voting";
+        // Get database login information
+        include "databasecreds.php";
 
         $conn = new mysqli($servername, $username, $password, $dbname);
 

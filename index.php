@@ -16,10 +16,7 @@ session_start();
 
  <?php
     // Database information
-    $servername = "127.0.0.1";
-    $username = "secretVote";
-    $password = "test";
-    $dbname = "voting";
+    include "databasecreds.php";
 
     // Creates a connection to the database with the info above.
     $conn = new mysqli($servername, $username, $password, $dbname);

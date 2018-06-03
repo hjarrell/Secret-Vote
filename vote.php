@@ -4,10 +4,8 @@ session_start();
 $vote = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $servername = "127.0.0.1";
-    $username = "secretVote";
-    $password = "test";
-    $dbname = "voting";
+    // Get database login information.
+    include "databasecreds.php";
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
