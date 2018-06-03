@@ -60,14 +60,7 @@ session_start(); // Have to start session before html
                 </form>
             ';
         } else {
-            echo '
-                Start a poll (If you are revoting on someone add a 1(2,3,... and so on for every time) after the name or people wont be able to vote.):
-                <form action="admincommand.php" method="post">
-                    <input type="hidden" name="command" value="startvote">
-                    <input type="text" name="name">
-                    <input type="submit">
-                </form>
-            ';
+            echo '<a href="newpoll.php">Create a new poll</a><br/>';
         }
 
         // Gets every poll in the database
