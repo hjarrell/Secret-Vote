@@ -30,7 +30,7 @@ session_start(); // Have to start session before html
  </head>
  <body>
 
-<h1>Secret Votings - SHHHHH ITS SECRET</h1>
+<h1>Secret Voting - SHHHHH ITS SECRET</h1>
 
 <?php if ($_SESSION["isadmin"] == true) {
     // Get database login information
