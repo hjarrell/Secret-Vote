@@ -28,7 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // If we have a valid vote then we should insert it.
             if (!empty($optionId)) {
                 $stmt->execute();
-                var_dump($stmt->error);
                 $_SESSION[md5($pollId)] = true; // This keeps double voting from happening
             }
         }
