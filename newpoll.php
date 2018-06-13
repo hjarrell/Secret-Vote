@@ -80,19 +80,82 @@ if ($_SESSION["isadmin"] != true) {
             alert("You need at least 1 option.");
           }
       }
+
+      // Removes the password input if changing vote types.
+      // Added this function because I didn't want to repeat this code 3 times.
+      function removePassowordField() {
+          if (document.getElementById("password-input-div") !== null) {
+              document.getElementById("password-input-div").remove();
+          }
+      }
+
+      // Called when the vote type was changed so the message and relevant fileds can be populated.
+      function voteTypeChanged() {
+          // Get what the option was changed to.
+          var selectedVoteType = document.getElementById("vote-type-select").value;
+          var voteTypeDescr = document.getElementById("vote-type-descr");
+
+          // Actually change the description and add/remove fields as needed.
+          switch (selectedVoteType) {
+                case "once":
+                    removePassowordField();
+                    voteTypeDescr.textContent = "This tries to keep the user from voting more than once but is not that secure.\
+                        The user can get around this by using multiple browsers or incognito mode.";
+                    break;
+                case "many":
+                    removePassowordField();
+                    voteTypeDescr.textContent = "This puts no restrictions on voting at all.";
+                    break;
+                case "password":
+                    voteTypeDescr.textContent = "This puts a password wall but then treats the poll as a voting only once poll.";
+                    var passwordInputDiv = document.createElement("div");
+                    passwordInputDiv.id = "password-input-div";
+                    
+                    var passwordDescr = document.createElement("strong");
+                    passwordDescr.textContent = "Enter poll password: ";
+                    passwordInputDiv.appendChild(passwordDescr);
+
+                    var passwordInput = document.createElement("input");
+                    passwordInput.name = "pollPassword";
+                    passwordInputDiv.appendChild(passwordInput);
+
+                    document.getElementById("vote-type-div").appendChild(passwordInputDiv);
+                    break;
+                case "otp":
+                    removePassowordField();
+                    voteTypeDescr.textContent = "This is the most secure way of voting. Users have a unique key that they have to put in before voting.\
+                        You can print these keys and manage who is out of the room and such from the admin page.";
+                    break;
+          }
+      }
   </script>
  </head>
  <body>
     <form action="poll.php" method="post" id="poll-form">
-        Title: <input type="text" name="title">
+        <strong>Title:</strong>
+        <input type="text" name="title">
         <br/>
-        Enter your poll options below
+        <strong>Enter your poll options below</strong>
         <br/>
         <div id="poll-options">
             <div id="option1">
                 <input type="text" name="option1">
                 <button type="button" onclick="removeOption(1);">X</button>
             </div>
+        </div>
+        <div id="vote-type-div">
+            <strong>Voting type: </strong>
+            <div id="vote-type-descr">
+                This tries to keep the user from voting more than once but is not that secure.
+                The user can get around this by using multiple browsers or incognito mode.
+            </div>
+            <select id="vote-type-select" name="voteType" onchange="voteTypeChanged()">
+                <option value="once">Vote only once</option>
+                <option value="many">Vote as many times as you want</option>
+                <option value="password">Need a password to vote</option>
+                <!-- Not supported yet -->
+                <!-- <option value="otp">Need a unique code for each person to vote</option> -->
+            </select>
         </div>
         <br/>
         <button type="button" onclick="newPollOption();">Add Option</button>

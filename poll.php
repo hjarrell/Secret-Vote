@@ -20,6 +20,7 @@ if ($_SESSION["isadmin"] == true) { // Make sure we have admin permissions
                 if ($pollCreated) {
                     // Get the id of the poll that was just created
                     $pollId = $conn->insert_id;
+
                     // For every POST data make sure that it starts with option and then insert as a poll option
                     foreach ($_POST as $formName => $formData) {
                         if (substr($formName, 0, 6) === "option") {
@@ -27,8 +28,19 @@ if ($_SESSION["isadmin"] == true) { // Make sure we have admin permissions
                             $conn->query($insertOptionQuery);
                         }
                     }
-                    // Make this poll the current poll being voted on
-                    $makeCurrentPollQuery = "INSERT INTO current_poll VALUES (1," . $pollId . ");";
+
+                    // Check if this is a password protected poll
+                    if ($_POST["voteType"] === "password") {
+                        // Make sure the user actually passed a password in
+                        if ($_POST["pollPassword"]) {
+                            $makeCurrentPollQuery = "INSERT INTO current_poll (id, poll_id, voting_type, pword) VALUES (1," . $pollId . ", '". $conn->real_escape_string($_POST["voteType"]) ."', '". $conn->real_escape_string($_POST["pollPassword"]) . "');";
+                        } else {
+                            echo "Creating post failed. Did not send a password.";
+                        }
+                    } else {
+                        // Make this poll the current poll being voted on
+                        $makeCurrentPollQuery = "INSERT INTO current_poll (id, poll_id, voting_type) VALUES (1," . $pollId . ", '". $conn->real_escape_string($_POST["voteType"]) ."');";
+                    }
                     $conn->query($makeCurrentPollQuery);
                 } else {
                     echo "Creating post failed.";

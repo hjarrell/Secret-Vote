@@ -25,12 +25,13 @@ session_start();
         die("Connection failed: ");
     } else {
         // Checks if there is a current poll up.
-        $checkForCurrentPollSql = "SELECT p.id, title from current_poll cp INNER JOIN polls p ON cp.poll_id = p.id;";
+        $checkForCurrentPollSql = "SELECT p.id, title, voting_type from current_poll cp INNER JOIN polls p ON cp.poll_id = p.id;";
         $result = $conn->query($checkForCurrentPollSql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc(); // The current_poll table can only ever have 1 row
             $title = $row["title"];
             $pollId = $row["id"];
+            $pollType = $row["voting_type"];
             $pollOptionsQuery = "SELECT id, option_text FROM poll_options WHERE poll_id = " . $pollId . ";";
             $pollOptionsResult = $conn->query($pollOptionsQuery);
 
@@ -38,21 +39,51 @@ session_start();
             echo "<h3>We are currently voting on: <strong>" . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . "</strong></h3>";
             echo "<br>";
             // Session of the name means we voted on this person already
-            if (isset($_SESSION[md5($pollId)])) {
+            if ($_SESSION[md5($pollId)] === "voted") {
                 echo "You already voted for this.";
             } else {
-                echo '
-                    Cast your vote!
-                    <form action="vote.php" method="post">';
-
-                    while ($pollOption = $pollOptionsResult->fetch_assoc()) {
-                        echo '<input type="radio" name="vote" value="' . $pollOption["id"] . '">' . $pollOption["option_text"] . '</input>';
-                        echo '<br/>';
-                    }
-                    
-                    echo '    <input type="submit">
-                    </form>
-                ';
+                switch ($pollType) {
+                    // Once and many vote the same way.
+                    case "once":
+                    case "many":
+                        echo '
+                        Cast your vote!
+                        <form action="vote.php" method="post">';
+                        while ($pollOption = $pollOptionsResult->fetch_assoc()) {
+                            echo '<input type="radio" name="vote" value="' . htmlspecialchars($pollOption["id"]) . '">' . htmlspecialchars($pollOption["option_text"]) . '</input>';
+                            echo '<br/>';
+                        }
+                        echo '    <input type="submit">
+                        </form>
+                        ';
+                        break;
+                    case "password":
+                        // Check to see if the user used the right password
+                        if ($_SESSION[md5($pollId)] === "authenticated") {
+                            echo '
+                            Cast your vote!
+                            <form action="vote.php" method="post">';
+                            while ($pollOption = $pollOptionsResult->fetch_assoc()) {
+                                echo '<input type="radio" name="vote" value="' . htmlspecialchars($pollOption["id"]) . '">' . htmlspecialchars($pollOption["option_text"]) . '</input>';
+                                echo '<br/>';
+                            }
+                            echo '    <input type="submit">
+                            </form>
+                            ';
+                        // Prompt for the password
+                        } else {
+                            echo 'Please enter the password.
+                            <form action="voteauth.php" method="post">
+                                <input type="text" name="pass">
+                                <br/>
+                                <input type="submit">
+                            </form>
+                            ';
+                        }
+                        break;
+                    case "otp":
+                        break;
+                }
             }
         } else {
             echo "There is not a poll currently going on...Stay tuned!";

@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS polls (
 CREATE TABLE IF NOT EXISTS current_poll (
     id ENUM('1') NOT NULL, -- This forces the id to only be 1
     poll_id INT NOT NULL,  -- ID of the poll being voted on
+    voting_type ENUM('once', 'many', 'password', 'otp'), -- Type of voting such as voting only once...
+    pword VARCHAR(150), -- Optional password for password protected polls
     PRIMARY KEY (id),      -- This forces there to either be 1 or 0 rows since primary keys are unique
     FOREIGN KEY (poll_id) REFERENCES polls(id)
 );
