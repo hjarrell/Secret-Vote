@@ -40,6 +40,8 @@ CREATE TABLE IF NOT EXISTS votes (
     FOREIGN KEY (option_id) REFERENCES poll_options(id)
 );
 
-GRANT SELECT,INSERT,DELETE ON voting.* TO 'screteVote'@'%' IDENTIFIED BY 'test';
+CREATE USER 'secretVote'@'%' IDENTIFIED WITH mysql_native_password BY 'test';
+
+GRANT SELECT,INSERT,DELETE ON voting.* TO 'secretVote'@'%';
 
 FLUSH PRIVILEGES;
