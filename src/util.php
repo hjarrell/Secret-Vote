@@ -2,7 +2,7 @@
 
     function get_nav_bar() {
         return '<nav>
-            <div class="nav-wrapper">
+            <div class="nav-wrapper indigo darken-4">
                 <a href="index.php" class="brand-logo truncate">Secret Voting - SHHHHH ITS SECRET</a>
             </div>
         </nav>';
@@ -10,7 +10,7 @@
 
     function get_admin_nav_bar() {
         return '<nav>
-            <div class="nav-wrapper">
+            <div class="nav-wrapper indigo darken-4">
                 <a href="index.php" class="brand-logo truncate">Secret Voting - SHHHHH ITS SECRET</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="admin.php">Admin</a></li>

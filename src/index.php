@@ -56,7 +56,7 @@ include "util.php";
                             echo make_radio_button("vote", htmlspecialchars($pollOption["id"]), htmlspecialchars($pollOption["option_text"]));
                             echo '<br/>';
                         }
-                        echo '    <button type="submit" class="btn waves-effect waves-light">Submit</button>
+                        echo '    <button type="submit" class="btn waves-effect waves-light amber accent-4">Submit</button>
                         </form>
                         </div>
                         </div>
@@ -74,7 +74,7 @@ include "util.php";
                                 echo make_radio_button("vote", htmlspecialchars($pollOption["id"]), htmlspecialchars($pollOption["option_text"]));
                                 echo '<br/>';
                             }
-                            echo '    <button type="submit" class="btn waves-effect waves-light">Submit</button>
+                            echo '    <button type="submit" class="btn waves-effect waves-light amber accent-4">Submit</button>
                             </form>
                             </div>
                             </div>
@@ -91,7 +91,7 @@ include "util.php";
                                 <label for="pass">Password</label>
                                 </div>
                                 <br/>
-                                <button type="submit" class="btn waves-effect waves-light">Submit</button>
+                                <button type="submit" class="btn waves-effect waves-light amber accent-4">Submit</button>
                             </form>
                             </div>
                             </div>

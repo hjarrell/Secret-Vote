@@ -63,7 +63,7 @@ include "util.php";
                             <br/>
                             <br/>
                             <br/>
-                            <button class="btn waves-effect waves-light" type="submit">Create Poll</button>
+                            <button class="btn waves-effect waves-light amber accent-4" type="submit">Create Poll</button>
                         </div>
                     </div>
                 </form>
