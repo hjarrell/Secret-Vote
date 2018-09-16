@@ -1,36 +1,17 @@
 <?php
 session_start(); // Have to start session before html
+include "util.php";
 ?>
 
 <html>
  <head>
-  <title>Secret Voting - SHHHHH</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="/favicon.ico?" type="image/x-icon">
-  <style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-    th,td {
-        border: 1px solid #ddd;
-        padding: 15px;
-    }
-    tr-nth-child(even) {
-        background-color: #f2f2f2;
-    }
-    th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: black;
-        color: white;
-    }
-  </style>
+  <?php echo get_header(); ?>
  </head>
  <body>
 
-<h1>Secret Voting - SHHHHH ITS SECRET</h1>
+ <?php
+    echo get_admin_nav_bar();
+ ?>
 
 <?php if ($_SESSION["isadmin"] == true) {
     // Get database login information
@@ -128,7 +109,6 @@ session_start(); // Have to start session before html
     </form>
 
 <?php }?>
-
 </body>
 
 </html>

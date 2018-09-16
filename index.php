@@ -2,17 +2,16 @@
 // Start the session so that the user can be uniquely identified for the purpose of not voting twice.
 // They are not able to be actually identified by name however.
 session_start();
+include "util.php";
 ?>
 
 <html>
  <head>
-  <title>Secret Voting - SHHHHH</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="/favicon.ico?" type="image/x-icon">
+  <?php echo get_header(); ?>
  </head>
  <body>
 
-<h1>Secret Voting - SHHHHH IT IS SECRET</h1>
+<?php echo get_nav_bar(); ?>
 
  <?php
     // Database information
