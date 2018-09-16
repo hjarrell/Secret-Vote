@@ -1,4 +1,6 @@
-"use strict";
+/* jshint browser: true */
+/* globals $:false, jQuery:false */
+'use strict';
 
 // Setup the options field
 $(document).ready(function(){
@@ -18,7 +20,7 @@ function newPollOption() {
         newOptionDiv.className = "row";
 
         var inputDiv = document.createElement("div");
-        inputDiv.className = "input-field col s6";
+        inputDiv.className = "input-field col s11";
         // Creates the actual input textbox
         var newOptionInput = document.createElement("input");
         newOptionInput.type = "text";
@@ -27,14 +29,14 @@ function newPollOption() {
 
         var newOptionLabel = document.createElement("label");
         newOptionLabel.setAttribute('for', newOptionDiv.id);
-        newOptionLabel.textContent = 'Option #' + newOptionNumber;
+        newOptionLabel.textContent = 'Poll Option';
         inputDiv.appendChild(newOptionLabel);
 
         newOptionDiv.appendChild(inputDiv);
 
 
         var buttonDiv = document.createElement("div");
-        buttonDiv.className = "input-field col s6"
+        buttonDiv.className = "input-field col s1";
         // Creates the remove option button
         var newOptionDelBtn = document.createElement("button");
         newOptionDelBtn.type = "button";
