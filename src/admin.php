@@ -22,6 +22,7 @@ include "util.php";
     if ($conn->connect_error) {
         die("Connection failed: ");
     } else {
+        echo '<div class="container">';
         $checkForCurrentPollSql = "SELECT p.title, p.id from current_poll cp INNER JOIN polls p ON cp.poll_id = p.id;";
         $currentPollResult = $conn->query($checkForCurrentPollSql);
         if ($currentPollResult->num_rows > 0) {
@@ -34,36 +35,39 @@ include "util.php";
             echo '
                 <form action="admincommand.php" method="post">
                     <input type="hidden" name="command" value="stopvote">
-                    <input type="submit" value="STOP POLL">
+                    <button type="submit" class="btn waves-effect waves-light red darken-4"> STOP THE POLL! </button>
                 </form>
+
+                    <form action="admincommand.php" method="post">
+                        <input type="hidden" name="command" value="clearvotes">
+                        <button type="submit" class="btn waves-effect waves-light red darken-4"> CLEAR ALL VOTES! </button>
+                    </form>
             ';
         } else {
-            echo '<a href="newpoll.php">Create a new poll</a><br/>';
+            echo "<h3>There is currently no active poll</h3>";
+            echo '<a href="newpoll.php" class="btn waves-effect waves-light amber accent-4">Create a new poll</a><br/>';
         }
 
         // Gets every poll in the database
-        $getAllPollsSql = "SELECT id, title FROM polls;";
+        $getAllPollsSql = "SELECT id, title FROM polls ORDER BY id DESC;";
         $getAllPollsResult = $conn->query($getAllPollsSql);
         if ($getAllPollsResult->num_rows > 0) { // Checks to make sure we have at least 1 poll
-            // Clear votes button
-            echo '
-                <form action="admincommand.php" method="post">
-                    <input type="hidden" name="command" value="clearvotes">
-                    <input type="submit" value="CLEAR ALL VOTES!">
-                </form>
-            ';
             
             // Loop through each poll
             while ($pollRow = $getAllPollsResult->fetch_assoc()) {
-                echo "<hr/>";
-                echo "Poll: " . htmlspecialchars($pollRow["title"]);
+                echo '<div class="card">
+                        <div class="card-content">
+                ';
+                echo '<span class="card-title">' . htmlspecialchars($pollRow["title"]) . '</span>'; 
                 echo "<br/>";
                 // Gets all the poll options and vote counts for the current poll
                 $votesSql = "SELECT DISTINCT COUNT(po.option_text), po.option_text FROM votes v INNER JOIN poll_options po ON v.option_id = po.id WHERE v.poll_id = " . $conn->real_escape_string($pollRow["id"]) . " GROUP BY po.option_text ORDER BY COUNT(po.option_text) DESC;";
+                $totalVotesSql = "SELECT COUNT(po.option_text) as tot FROM votes v INNER JOIN poll_options po ON v.option_id = po.id WHERE v.poll_id = " . $conn->real_escape_string($pollRow["id"]);
                 $votesResult = $conn->query($votesSql);
+                $totalVotes = $conn->query($totalVotesSql)->fetch_assoc()["tot"];
                 if ($votesResult->num_rows > 0) {
-                    echo "
-                    <table>
+                    echo '
+                    <table class="responsive-table">
                         <tr>
                             <th>
                             Poll Option
@@ -71,7 +75,10 @@ include "util.php";
                             <th>
                             Votes
                             </th>
-                        </tr>";
+                            <th>
+                            % Total
+                            </th>
+                        </tr>';
                     $totalSum = 0;
                     while ($row = $votesResult->fetch_assoc()) {
                         echo "<tr>";
@@ -81,14 +88,16 @@ include "util.php";
                         echo "<td>";
                         echo htmlspecialchars($row["COUNT(po.option_text)"]);
                         echo "</td>";
+                        echo "<td>";
+                        echo htmlspecialchars(sprintf("%01.2f", doubleval($row["COUNT(po.option_text)"])/doubleval($totalVotes) * 100.0)) . "%";
+                        echo "</td>";
                         echo "</tr>";
-                        $totalSum += $row["COUNT(po.option_text)"];
                     }
                     echo "<tr>
                 <td><strong>Total</strong></td>
                 <td>";
-                    echo htmlspecialchars($totalSum);
-                    echo "</td></tr>";
+                    echo htmlspecialchars($totalVotes);
+                    echo "</td><td>100%</td></tr>";
 
                     echo "
             </table>
@@ -97,16 +106,28 @@ include "util.php";
                 } else {
                     echo "There are currently have no votes :(";
                 }
+                echo "</div></div>";
             }
         }
+        echo "</div>";
     }
 
 } else {?>
 
-    <form action="adminlogin.php" method="post">
-        Password: <input type="password" name="password">
-        <input type="submit">
-    </form>
+    <div class="container">
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Please login.</span>
+                <form action="adminlogin.php" method="post">
+                    <div class="input-field">
+                        <input type="password" name="password">
+                        <label for="password">Password</label>
+                    </div>
+                    <button type="submit" class="btn waves-effect waves-light amber accent-4">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 <?php }?>
 </body>

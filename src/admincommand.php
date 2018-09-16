@@ -25,7 +25,9 @@ if ($_SESSION["isadmin"] == true) { // Make sure we have admin permissions
                         }
                         break;
                     case "clearvotes":
-                        $sql="DELETE FROM votes WHERE 1=1;";
+                        $conn->query("DELETE FROM votes WHERE 1=1;");
+                        $conn->query("DELETE FROM poll_options WHERE 1=1;");
+                        $sql="DELETE FROM polls WHERE 1=1;";
                         break;
                     default:
                         break;

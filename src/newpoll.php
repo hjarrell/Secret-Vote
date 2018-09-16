@@ -13,7 +13,7 @@ include "util.php";
         <?php echo get_header(); ?>
         </head>
     <body>
-        <?php echo get_nav_bar(); ?>
+        <?php echo get_admin_nav_bar(); ?>
         <div class="container row ">
             <div class="row">
             </div>
