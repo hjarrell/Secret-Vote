@@ -35,6 +35,7 @@ include "util.php";
             $pollOptionsResult = $conn->query($pollOptionsQuery);
 
             // Print out who we are voting on and escape the string just in case
+            echo '<div class="container">';
             echo "<h3>We are currently voting on: <strong>" . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . "</strong></h3>";
             echo "<br>";
             // Session of the name means we voted on this person already
@@ -46,37 +47,54 @@ include "util.php";
                     case "once":
                     case "many":
                         echo '
-                        Cast your vote!
-                        <form action="vote.php" method="post">';
+                        <div class="card">
+                            <div class="card-content">
+                            <span class="card-title">Cast your vote!</span>
+                        <form action="vote.php" method="post">
+                        ';
                         while ($pollOption = $pollOptionsResult->fetch_assoc()) {
-                            echo '<input type="radio" name="vote" value="' . htmlspecialchars($pollOption["id"]) . '">' . htmlspecialchars($pollOption["option_text"]) . '</input>';
+                            echo make_radio_button("vote", htmlspecialchars($pollOption["id"]), htmlspecialchars($pollOption["option_text"]));
                             echo '<br/>';
                         }
-                        echo '    <input type="submit">
+                        echo '    <button type="submit" class="btn waves-effect waves-light">Submit</button>
                         </form>
+                        </div>
+                        </div>
                         ';
                         break;
                     case "password":
                         // Check to see if the user used the right password
                         if ($_SESSION[md5($pollId)] === "authenticated") {
                             echo '
-                            Cast your vote!
+                            <div class="card">
+                            <div class="card-content">
+                            <span class="card-title">Cast your vote!</span>
                             <form action="vote.php" method="post">';
                             while ($pollOption = $pollOptionsResult->fetch_assoc()) {
-                                echo '<input type="radio" name="vote" value="' . htmlspecialchars($pollOption["id"]) . '">' . htmlspecialchars($pollOption["option_text"]) . '</input>';
+                                echo make_radio_button("vote", htmlspecialchars($pollOption["id"]), htmlspecialchars($pollOption["option_text"]));
                                 echo '<br/>';
                             }
-                            echo '    <input type="submit">
+                            echo '    <button type="submit" class="btn waves-effect waves-light">Submit</button>
                             </form>
+                            </div>
+                            </div>
                             ';
                         // Prompt for the password
                         } else {
-                            echo 'Please enter the password.
+                            echo '
+                            <div class="card">
+                            <div class="card-content">
+                            <span class="card-title">Please enter the password.</span>
                             <form action="voteauth.php" method="post">
+                                <div class="input-field">
                                 <input type="text" name="pass">
+                                <label for="pass">Password</label>
+                                </div>
                                 <br/>
-                                <input type="submit">
+                                <button type="submit" class="btn waves-effect waves-light">Submit</button>
                             </form>
+                            </div>
+                            </div>
                             ';
                         }
                         break;
@@ -84,6 +102,7 @@ include "util.php";
                         break;
                 }
             }
+            echo "</div>";
         } else {
             echo "There is not a poll currently going on...Stay tuned!";
         }

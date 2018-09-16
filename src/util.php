@@ -31,4 +31,15 @@
         ';
     }
 
+    function make_radio_button($group, $value, $text) {
+        return sprintf('
+        <p>
+            <label>
+                <input name="%s" type=radio value="%s" />
+                <span>%s</span>
+            </lable>
+        </p>
+        ', $group, $value, $text);
+    }
+
 ?>
