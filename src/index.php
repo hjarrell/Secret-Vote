@@ -104,9 +104,20 @@ include "util.php";
             }
             echo "</div>";
         } else {
-            echo "There is not a poll currently going on...Stay tuned!";
+            echo '<div class="container">
+                <h3>There is not a poll currently going on...Stay tuned!<h3>
+                <div class="carousel">
+                    ';
+                    $files = glob('resources/*.jpg');
+                    foreach($files as $file)  {
+                        echo '<a class="carousel-item" href="#'. $file . '!"><img src="' . $file . '"></a>';
+                    }
+            echo '
+                </div>
+            </div>';
         }
     }
  ?> 
+<script src="js/index.js"></script>
 </body>
 </html>
