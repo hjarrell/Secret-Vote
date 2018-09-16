@@ -15,40 +15,7 @@ function newPollOption() {
     // Make sure someone hasn't changed the poll option numbers
     if (newOptionNumber != null && document.getElementById("option" + newOptionNumber) == null) {
         // Create the div that wraps an input element
-        var newOptionDiv = document.createElement("div");
-        newOptionDiv.id = "option" + newOptionNumber;
-        newOptionDiv.className = "row";
-
-        var inputDiv = document.createElement("div");
-        inputDiv.className = "input-field col s11";
-        // Creates the actual input textbox
-        var newOptionInput = document.createElement("input");
-        newOptionInput.type = "text";
-        newOptionInput.name = "option" + newOptionNumber;
-        inputDiv.appendChild(newOptionInput);
-
-        var newOptionLabel = document.createElement("label");
-        newOptionLabel.setAttribute('for', newOptionDiv.id);
-        newOptionLabel.textContent = 'Poll Option';
-        inputDiv.appendChild(newOptionLabel);
-
-        newOptionDiv.appendChild(inputDiv);
-
-
-        var buttonDiv = document.createElement("div");
-        buttonDiv.className = "input-field col s1";
-        // Creates the remove option button
-        var newOptionDelBtn = document.createElement("button");
-        newOptionDelBtn.type = "button";
-        newOptionDelBtn.className = "btn waves-effect waves-light";
-        // Wraps the function call in another function in order to pass the option number.
-        newOptionDelBtn.onclick = function() { removeOption(newOptionNumber); };
-        newOptionDelBtn.textContent = "X";
-        buttonDiv.appendChild(newOptionDelBtn);
-
-        newOptionDiv.appendChild(buttonDiv);
-
-        pollOptions.appendChild(newOptionDiv);
+       addPollOption(newOptionNumber, '');
     } else {
         console.log("Error: Something went wrong parsing option");
     }
@@ -116,4 +83,86 @@ function voteTypeChanged() {
                 You can print these keys and manage who is out of the room and such from the admin page.";
             break;
     }
+}
+
+function addPollOption(optionNumber, value) {
+    var pollOptions = document.getElementById("poll-options");
+
+    var newOptionDiv = document.createElement("div");
+    newOptionDiv.id = "option" + optionNumber;
+    newOptionDiv.className = "row";
+
+    var inputDiv = document.createElement("div");
+    inputDiv.className = "input-field col s11";
+    // Creates the actual input textbox
+    var newOptionInput = document.createElement("input");
+    newOptionInput.type = "text";
+    newOptionInput.name = "option" + optionNumber;
+    newOptionInput.value = value;
+    inputDiv.appendChild(newOptionInput);
+
+    var newOptionLabel = document.createElement("label");
+    newOptionLabel.setAttribute('for', newOptionDiv.id);
+    newOptionLabel.textContent = 'Poll Option';
+    inputDiv.appendChild(newOptionLabel);
+
+    newOptionDiv.appendChild(inputDiv);
+
+
+    var buttonDiv = document.createElement("div");
+    buttonDiv.className = "input-field col s1";
+    // Creates the remove option button
+    var newOptionDelBtn = document.createElement("button");
+    newOptionDelBtn.type = "button";
+    newOptionDelBtn.className = "btn waves-effect waves-light";
+    // Wraps the function call in another function in order to pass the option number.
+    newOptionDelBtn.onclick = function() { removeOption(optionNumber); };
+    newOptionDelBtn.textContent = "X";
+    buttonDiv.appendChild(newOptionDelBtn);
+
+    newOptionDiv.appendChild(buttonDiv);
+
+    pollOptions.appendChild(newOptionDiv);
+}
+
+function clearPollOptions() {
+    var pollOptions = document.getElementById("poll-options");
+
+    while (pollOptions.firstChild) {
+        pollOptions.removeChild(pollOptions.firstChild);
+    }
+}
+
+function resetYN() {
+    var pollOptions = document.getElementById("poll-options");
+
+    clearPollOptions();
+    addPollOption(1, "Yes");
+    addPollOption(2, "No");
+
+    M.updateTextFields();
+}
+
+function resetYNA() {
+    var pollOptions = document.getElementById("poll-options");
+
+    clearPollOptions();
+    addPollOption(1, "Yes");
+    addPollOption(2, "No");
+    addPollOption(3, "Abstain");
+
+    M.updateTextFields();
+}
+
+function resetYNANC() {
+    var pollOptions = document.getElementById("poll-options");
+
+    clearPollOptions();
+    addPollOption(1, "Yes");
+    addPollOption(2, "No");
+    addPollOption(4, "Abstain");
+    addPollOption(5, "No Confidence");
+
+
+    M.updateTextFields();
 }
