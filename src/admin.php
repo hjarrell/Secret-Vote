@@ -37,11 +37,6 @@ include "util.php";
                     <input type="hidden" name="command" value="stopvote">
                     <button type="submit" class="btn waves-effect waves-light red darken-4"> STOP THE POLL! </button>
                 </form>
-
-                    <form action="admincommand.php" method="post">
-                        <input type="hidden" name="command" value="clearvotes">
-                        <button type="submit" class="btn waves-effect waves-light red darken-4"> CLEAR ALL VOTES! </button>
-                    </form>
             ';
         } else {
             echo "<h3>There is currently no active poll</h3>";
@@ -52,6 +47,11 @@ include "util.php";
         $getAllPollsSql = "SELECT id, title FROM polls ORDER BY id DESC;";
         $getAllPollsResult = $conn->query($getAllPollsSql);
         if ($getAllPollsResult->num_rows > 0) { // Checks to make sure we have at least 1 poll
+
+            echo '<form action="admincommand.php" method="post">
+            <input type="hidden" name="command" value="clearvotes">
+            <button type="submit" class="btn waves-effect waves-light red darken-4"> CLEAR ALL VOTES! </button>
+        </form>';
             
             // Loop through each poll
             while ($pollRow = $getAllPollsResult->fetch_assoc()) {
